@@ -1,24 +1,18 @@
 // React and other hooks
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 // React bootstrap components
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 
-// This is Initial data
-const initialState = {
-  url: "",
-  name: "",
-  description: "",
-  price: "",
-  category: "",
-};
+// Redux's actions
+import { addProduct } from "../../../../Redux/Actions/DashboardAction.js";
 
 export default function Products() {
+  // getData
+  const goods = useSelector((state) => state.dashboard.add.goods);
   // Form state
-  const [value, setValue] = useState(initialState);
-
-  // SetUI state
-  const [data, setData] = useState([]);
+  const [value, setValue] = useState(goods[0]);
 
   // Form change function
   const form = (e) => {
@@ -29,13 +23,7 @@ export default function Products() {
   };
 
   // SetUI function
-  const setUI = (v) => {
-    if (initialState !== v) {
-      const copy = [...data];
-      copy.push(v);
-      setData(copy);
-    }
-  };
+  const handleAddProduct = (v) => addProduct(v);
 
   return (
     <div>
@@ -113,36 +101,39 @@ export default function Products() {
         </Form.Group>
       </Form>
       <Row className="d-flex justify-content-center align-items-center mb-5">
-        <Col lg={1} className="border ps-0 ms-0">
+        <Col lg={1} className=" ps-0 ms-0">
           <Button
             variant="warning"
             children="Qo'shish"
             className="fw-bold"
             onClick={() => {
-              setUI(value);
-              setValue(initialState);
+              handleAddProduct(value);
+              setValue(goods[0]);
             }}
           />
         </Col>
       </Row>
 
       <Row>
-        {data.map((v, i) => (
-          <Col key={i + "card"} className="mb-3" lg={4}>
-            <Card>
-              <Card.Img variant="top" src={v.url} />
-              <Card.Body>
-                <Card.Title>{v.name}</Card.Title>
-                <Card.Text>
-                  {v.description}
-                  <br />
-                  {v.category}
-                </Card.Text>
-                <p>{v.price} 000 so'm</p>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+        {goods.map((v, i) => {
+          if (v !== goods[0])
+            return (
+              <Col key={i + "card"} className="mb-3" lg={4}>
+                <Card>
+                  <Card.Img variant="top" src={v.url} />
+                  <Card.Body>
+                    <Card.Title>{v.name}</Card.Title>
+                    <Card.Text>
+                      {v.description}
+                      <br />
+                      {v.category}
+                    </Card.Text>
+                    <p>{v.price} 000 so'm</p>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+        })}
       </Row>
     </div>
   );

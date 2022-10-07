@@ -1,6 +1,5 @@
-import { Form } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+// React bootstrap components
+import { Form, Button, Modal } from "react-bootstrap";
 
 export default function UsersModal(props) {
   return (
@@ -18,9 +17,7 @@ export default function UsersModal(props) {
       </Modal.Header>
       <Modal.Body>
         <Form.Select
-          onChange={(e) => {
-            props.editRole(e.target.value);
-          }}
+          onChange={(e) => props.handleEditUserRole(e.target.value)}
           aria-label="Default select example"
         >
           <option>--Tanlang--</option>

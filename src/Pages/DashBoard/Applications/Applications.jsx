@@ -1,14 +1,17 @@
-// Data
-import Data from "../../Data/Data";
+import { useSelector } from "react-redux";
 
-export default function Delivered() {
+// function components
+export default function Applications() {
   let allPrice = 0;
+
+  // getData
+  const aplications = useSelector((state) => state.dashboard.data);
 
   return (
     <div className="p-4">
-      <h2>Yetkazilgan</h2>
+      <h2>Arizalar</h2>
       <p className="text-secondary">
-        Yetkazib berilgan arizalarni kuzatishingiz mumkin.
+        Yetib kelgan arizalarni kuzatishingiz mumkin.
       </p>
       <table className="table table-striped bordered">
         <thead>
@@ -25,10 +28,10 @@ export default function Delivered() {
         </thead>
 
         <tbody>
-          {Data.map((v, i) => {
+          {aplications.map((v, i) => {
             allPrice += v.price * v.num;
             return (
-              <tr key={i + "delivered"}>
+              <tr key={i + "applications"}>
                 <td>{i + 1}</td>
                 <td>{v.fulName}</td>
                 <td>{v.foodName}</td>
@@ -36,7 +39,7 @@ export default function Delivered() {
                 <td>{v.num}</td>
                 <td>{v.price * v.num} 000</td>
                 <td>{v.phoneNum}</td>
-                <td>Yetkazildi</td>
+                <td>{v.comment}</td>
               </tr>
             );
           })}

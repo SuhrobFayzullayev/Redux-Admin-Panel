@@ -1,34 +1,24 @@
 // UserData
-import UserData from "../../Data/UserData";
 import { Button } from "react-bootstrap";
 import { BsPen, BsTrash } from "react-icons/bs";
 import React, { useState } from "react";
 import UsersModal from "./UsersModal";
+import { useSelector } from "react-redux";
+import {
+  deleteUser,
+  editUserRole,
+} from "../../../Redux/Actions/DashboardAction.js";
 
 export default function Users() {
+  // getData
+  const userData = useSelector((state) => state.dashboard.userData);
+
   // Modal show state
   const [modalShow, setModalShow] = React.useState(false);
 
-  // User state
-  const [data, setData] = useState(UserData);
-
-  // User Value
-  const [val, setVal] = useState(null);
-
   // Edit user role function
-  const editRole = (v) => {
-    const copy = [...data];
-    copy[val].roli = v;
-    console.log(copy);
-    setData(copy);
-  };
-
-  // Delete user role function
-  const deleteUser = (i) => {
-    const copy = [...data];
-    copy.splice(i, 1);
-    setData(copy);
-  };
+  let [index, setIndex] = useState(null);
+  const handleEditUserRole = (v) => editUserRole(v, index);
 
   return (
     <div className="p-4">
@@ -45,7 +35,7 @@ export default function Users() {
           </tr>
         </thead>
         <tbody>
-          {data.map((v, i) => {
+          {userData.map((v, i) => {
             return (
               <tr key={i + "user"}>
                 <td>{i + 1}</td>
@@ -57,7 +47,7 @@ export default function Users() {
                     variant="outline-white"
                     onClick={() => {
                       setModalShow(true);
-                      setVal(i);
+                      setIndex(i);
                     }}
                   >
                     <BsPen className="text-dark" />
@@ -74,7 +64,7 @@ export default function Users() {
       {/* Modal */}
       {modalShow && (
         <UsersModal
-          editRole={editRole}
+          handleEditUserRole={handleEditUserRole}
           show={modalShow}
           onHide={() => setModalShow(false)}
         />

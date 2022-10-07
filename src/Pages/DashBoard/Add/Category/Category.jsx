@@ -1,22 +1,22 @@
 // React and other hooks
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 // React bootstrap components
 import { InputGroup, Form, Row, Button, Col } from "react-bootstrap";
+
+// Redux's actions
+import { addCategory } from "../../../../Redux/Actions/DashboardAction.js";
+
 export default function Category() {
+  // getData
+  const category = useSelector((state) => state.dashboard.add.category);
+
   // Category change state
   const [value, setValue] = useState("");
 
-  // Data state
-  const [data, setData] = useState([]);
-
   // SetUI new category function
-  const addCategory = (v) => {
-    const copy = [...data];
-    copy.push(v);
-    setData(copy);
-    setValue("");
-  };
+  const handleAddCategory = (v) => v && addCategory(v);
 
   return (
     <div>
@@ -33,17 +33,20 @@ export default function Category() {
             variant="warning"
             children="Qo'shish"
             className="fw-bold"
-            onClick={() => addCategory(value)}
+            onClick={() => {
+              handleAddCategory(value);
+              setValue("");
+            }}
           />
         </Col>
       </Row>
       <div>
-        {data.map((v, i) => (
+        {category.map((v, i) => (
           <Button
             key={i + "category"}
             variant="secondary"
             children={v}
-            className="mx-1"
+            className="mx-1 mt-5"
           />
         ))}
       </div>
